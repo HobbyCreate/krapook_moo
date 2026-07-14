@@ -30,13 +30,26 @@ export const editPocketNameService = async (id, name) => {
 }
 
 // edit pocket limit service
+export const editPocketLimitService = async (id, newLimit, userId, oldLimit) => {
+    const diff = parseFloat(newLimit) - parseFloat(oldLimit);
 
-// transfer limit to another pocket sevice
+    return await prisma.$transaction([
+        prisma.pocket.update({
+            where: { id: id },
+            data: { limit: parseFloat(newLimit) }
+        }),
+        prisma.userBalance.update({
+            where: { userId: userId },
+            data: { amount: { decrement: diff } }
+        })
+    ]);
+};
+
 
 // delete pocket sevice
 export const deletePocketService = async (id, userId, limit) => {
     return await prisma.$transaction([
-        prisma.pocket.delete({where: { id: id }}),
+        prisma.pocket.delete({ where: { id: id }}),
         prisma.userBalance.update({
                 where: { userId },
                 data: { amount: { increment: parseFloat(limit) } }

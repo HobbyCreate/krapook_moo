@@ -1,5 +1,5 @@
-import { getAllpocketsService, addPocketService, editPocketNameService, deletePocketService } from '../service/pocketService.js'
-
+import { getAllpocketsService, addPocketService, editPocketNameService, editPocketLimitService, deletePocketService } from '../service/pocketService.js'
+import { checkBalanceService } from '../service/balanceSevice.js'
 // สมมติว่าใช้ userId เป็น 'user_default' ไปก่อนสำหรับการทดสอบ
 // const USER_ID = 'user_default'; 
 
@@ -28,8 +28,32 @@ export const changePocketName = async (req, res) => {
     const { newName } = req.body;
     try {
         const pocket = await editPocketNameService(id, newName);
+        res.status(200).json({ message: "เปลี่ยนชื่อกระเป๋าสำเร็จ", pocket });
     } catch(error) {
         res.status(500).json({ error: "เปลี่ยนชื่อกระเป๋าไม่สำเร็จ" });
+    }
+}
+
+export const changePocketLimit = async (req, res) => {
+    const { id } = req.params;
+    const { newLimit } = req.body;
+    const { userId, limit: oldLimit } = req.pocket;
+    
+    const userBalance = await checkBalanceService(userId);
+    if (!userBalance) {
+        return res.status(404).json({ error: "ไม่พบข้อมูลยอดเงินของผู้ใช้" });
+    }
+    const diff = parseFloat(newLimit) - parseFloat(oldLimit);
+
+    if (diff > userBalance.amount) {
+        return res.status(400).json({ error: "ยอดเงินในกระเป๋าหลักไม่พอสำหรับการเพิ่ม Limit" });
+    }
+
+    try {
+        const result = await editPocketLimitService(id, newLimit, userId, oldLimit);
+        res.status(200).json({ message: "เปลี่ยน limit กระเป๋าสำเร็จ", pocket: result[0] });
+    } catch(error) {
+        res.status(500).json({ error: "เปลี่ยน limit กระเป๋าไม่สำเร็จ" });
     }
 }
 

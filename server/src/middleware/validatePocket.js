@@ -3,7 +3,6 @@ import { checkBalanceService } from '../service/balanceSevice.js';
 const prisma = new PrismaClient();
 
 
-
 export const validateAddPocket = async (req, res, next) => {
     const { userId, name, limit } = req.body;
 
@@ -20,8 +19,6 @@ export const validateAddPocket = async (req, res, next) => {
             return res.status(400).json({ error: "ยอด limit สูงกว่าเงินที่มีในกระเป๋าหลัก" });
         }
         next();
-
-
 
     } catch (error) {
         return res.status(500).json({ error: "เกิดข้อผิดพลาดในการตรวจสอบข้อมูล" });
@@ -43,6 +40,5 @@ export const validateAvailablePocket = async (req, res, next) => {
     } catch (error) {
         res.status(500).json({ error: "ดึงข้อมูลไม่สำเร็จ" });
     }
-
 };
 

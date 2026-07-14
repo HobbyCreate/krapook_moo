@@ -19,7 +19,6 @@ export const getBalance = async (req, res) => {
 export const addBalance = async (req, res) => {
     const { userId, amount } = req.body;
     try {
-        // อัปเดตเงินโดยใช้ upsert (ถ้ายังไม่มีข้อมูลให้สร้าง ถ้ามีแล้วให้อัปเดต)
         const updatedBalance = await prisma.userBalance.upsert({
             where: { userId: userId },
             update: { amount: { increment: parseFloat(amount) } },
