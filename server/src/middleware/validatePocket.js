@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+import { checkBalanceService } from '../service/balanceSevice.js';
 const prisma = new PrismaClient();
+
+
 
 export const validateAddPocket = async (req, res, next) => {
     const { userId, name, limit } = req.body;
@@ -9,9 +12,7 @@ export const validateAddPocket = async (req, res, next) => {
         return res.status(400).json({ error: "ข้อมูลไม่ครบถ้วนกรุณาลองใหม่อีกครั้ง" });
     }
     try {
-        const balance = await prisma.userBalance.findUnique({
-            where: { userId : userId }
-        })
+        const balance = await checkBalanceService(userId);
         if (!balance) {
             return res.status(404).json({ error: "ไม่พบข้อมูลยอดเงินของผู้ใช้รายนี้" })
         }
@@ -20,12 +21,14 @@ export const validateAddPocket = async (req, res, next) => {
         }
         next();
 
+
+
     } catch (error) {
         return res.status(500).json({ error: "เกิดข้อผิดพลาดในการตรวจสอบข้อมูล" });
     }
 }
 
-export const validateDeletePocket = async (req, res, next) => {
+export const validateAvailablePocket = async (req, res, next) => {
     const { id } = req.params;
     try {
         const pocket = await prisma.pocket.findUnique({
@@ -35,6 +38,7 @@ export const validateDeletePocket = async (req, res, next) => {
         if (!pocket) {
             return res.status(404).json({ error: "ไม่พบกระเป๋านี้" });
         }
+        req.pocket = pocket;
         next();
     } catch (error) {
         res.status(500).json({ error: "ดึงข้อมูลไม่สำเร็จ" });
