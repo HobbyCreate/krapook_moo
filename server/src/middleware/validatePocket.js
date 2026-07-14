@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { checkBalanceService } from '../service/balanceSevice.js';
+import { getEachPocketSevice } from '../service/pocketService.js'
 const prisma = new PrismaClient();
 
 
@@ -28,10 +29,7 @@ export const validateAddPocket = async (req, res, next) => {
 export const validateAvailablePocket = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const pocket = await prisma.pocket.findUnique({
-            where: { id: id }
-        });
-
+        const pocket = await getEachPocketSevice(id);
         if (!pocket) {
             return res.status(404).json({ error: "ไม่พบกระเป๋านี้" });
         }
