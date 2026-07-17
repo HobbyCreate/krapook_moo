@@ -14,12 +14,15 @@ export const getAllPocket = async (req, res) => {
 }
 
 export const addPocket = async (req, res) => {
-    const { userId, name , limit , icon} = req.body
+    const { userId, name, limit, icon } = req.body;
     try {
-        const pocket = await addPocketService(userId, name , limit , icon);
-        res.status(201).json({ message : `สร้างกระเป๋า ${name} เรียบร้อยแล้ว`, pocket})
+        const pocket = await addPocketService(userId, name, limit, icon);
+        res.status(201).json({ 
+            message: `สร้างกระเป๋า ${name} เรียบร้อยแล้ว`, 
+            pocket 
+        });
     } catch (error) {
-        res.status(500).json({ error: "เพิ่มกระเป๋าไม่สำเร็จ" });
+        res.status(400).json({ error: error.message || "เพิ่มกระเป๋าไม่สำเร็จ" });
     }
 };
 
