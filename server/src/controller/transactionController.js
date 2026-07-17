@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-import { insertNewTransactionService, getAllTransactionService, editTransactionService } from '../service/transactionService.js'
+import { insertNewTransactionService, getAllTransactionService, editTransactionService, deleteTransactionService } from '../service/transactionService.js'
 import { checkBalanceService } from '../service/balanceSevice.js'
 
 // ดึง transactions ของกระเป๋านั้น และต้องเป็นเจ้าของกระเป๋า
@@ -41,9 +41,19 @@ export const editTransaction = async (req, res) => {
     const { id } = req.params; 
     const { userId, note, pocketId, amount } = req.body; 
     try {
-        // ส่งให้ครบและเรียงลำดับให้ถูก
         const result = await editTransactionService(userId, id, note, pocketId, amount);
         res.json({ message: "แก้ไขรายการสำเร็จ", result });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export const deleteTransaction = async (req, res) => {
+    const { id } = req.params; 
+    const { userId } = req.body; 
+    try {
+        const result = await deleteTransactionService(userId, id);
+        res.json({ message: "ลบรายการสำเร็จ", result });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
