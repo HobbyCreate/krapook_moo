@@ -23,7 +23,8 @@ export const getEachTransactionService = async (transactionId) => {
 
 export const insertNewTransactionService = async (userId, amount, type, pocketId = null, note = "") => {
     return await prisma.$transaction(async (tx) => {
-
+        let deductMain = 0;
+        let deductPocket = 0;
         // 1. กรณี INCOME
         if (type === 'INCOME') {
             await tx.userBalance.update({
@@ -51,13 +52,16 @@ export const insertNewTransactionService = async (userId, amount, type, pocketId
                     where: { userId },
                     data: { amount: { decrement: amount } }
                 });
+                deductMain = amount; 
+                deductPocket = 0;
             } else {
                 // กรณีระบุกระเป๋า: ตรวจสอบกระเป๋า
                 const pocket = await tx.pocket.findUnique({ where: { id: pocketId } });
                 if (!pocket) throw new Error("ไม่พบกระเป๋านี้");
 
-                let deductPocket = Math.min(amount, pocket.limit);
-                let deductMain = amount - deductPocket;
+                deductMain = amount;
+                deductPocket = Math.min(amount, pocket.limit);
+                deductMain = amount - deductPocket;
 
                 // ตรวจสอบรวมว่าเงินหลักพอสำหรับส่วนเกินไหม
                 if (currentBalance.amount < deductMain) throw new Error("ยอดเงินรวมไม่พอทำรายการ");
@@ -152,9 +156,10 @@ export const editTransactionService = async (userId, transactionId, newNote, new
             }
 
             // Update Transaction
+            const pocket = await tx.pocket.findUnique({ where: { id: pocketId } });
             await tx.transaction.update({
                 where: { id: transactionId },
-                data: { amount, deductMain, deductPocket, pocketId, note: newNote ?? transaction.note }
+                data: { amount, deductMain, deductPocket, pocketId, note: newNote ?? transaction.note, pocketName: pocket.name }
             });
         }
         else if (newNote !== undefined && newNote !== transaction.note) {

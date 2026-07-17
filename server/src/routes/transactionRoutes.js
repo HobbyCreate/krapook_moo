@@ -1,12 +1,12 @@
 import express from 'express';
 import { validateAddPocket, validateAvailablePocket } from '../middleware/validatePocket.js';
-import { getAllTransactions, insertNewTransaction } from '../controller/transactionController.js'
+import { getAllTransactions, insertNewTransaction, editTransaction } from '../controller/transactionController.js'
 
 const transactionRouter = express.Router();
 
 transactionRouter.get('/', getAllTransactions);       
-transactionRouter.post('/', validateAvailablePocket, insertNewTransaction);       
-transactionRouter.put('/:id', updateTransaction);
-
+transactionRouter.post('/add', insertNewTransaction);   
+transactionRouter.put('/:id', editTransaction);     
+// transactionRouter.delete('/', deleteTransactionService);    
 
 export default transactionRouter;
