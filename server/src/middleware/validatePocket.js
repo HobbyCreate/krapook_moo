@@ -5,7 +5,8 @@ const prisma = new PrismaClient();
 
 
 export const validateAddPocket = async (req, res, next) => {
-    const { userId, name, limit } = req.body;
+    const { userId } = req.userId;
+    const { name, limit } = req.body;
 
     // check userId, pocket name, pocket limit
     if (!userId || !name || !limit || limit <= 0) {
@@ -29,7 +30,7 @@ export const validateAddPocket = async (req, res, next) => {
 export const validateAvailablePocket = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const pocket = await getEachPocketSevice(id);
+        const pocket = await getEachPocketSevice(id);  // ส่ง pocket id
         if (!pocket) {
             return res.status(404).json({ error: "ไม่พบกระเป๋านี้" });
         }

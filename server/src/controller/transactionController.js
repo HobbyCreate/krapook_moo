@@ -6,7 +6,7 @@ import { checkBalanceService } from '../service/balanceSevice.js'
 
 // ดึง transactions ของกระเป๋านั้น และต้องเป็นเจ้าของกระเป๋า
 export const getAllTransactions = async (req, res) => {
-    const userId = req.user?.id || req.body.userId;  // รออัพเดท jwt
+    const { userId } = req.userId;
     try {
         const user = await checkBalanceService(userId)
         if(!user){
@@ -21,7 +21,7 @@ export const getAllTransactions = async (req, res) => {
 }
 
 export const insertNewTransaction = async (req, res) => {
-    const userId = req.user?.id || req.body.userId;
+    const { userId } = req.userId;
     const { amount, type, pocketId, note } = req.body; 
 
     try {
@@ -39,7 +39,8 @@ export const insertNewTransaction = async (req, res) => {
 
 export const editTransaction = async (req, res) => {
     const { id } = req.params; 
-    const { userId, note, pocketId, amount } = req.body; 
+    const { userId } = req.userId;
+    const { note, pocketId, amount } = req.body; 
     try {
         const result = await editTransactionService(userId, id, note, pocketId, amount);
         res.json({ message: "แก้ไขรายการสำเร็จ", result });
@@ -50,7 +51,7 @@ export const editTransaction = async (req, res) => {
 
 export const deleteTransaction = async (req, res) => {
     const { id } = req.params; 
-    const { userId } = req.body; 
+    const { userId } = req.userId; 
     try {
         const result = await deleteTransactionService(userId, id);
         res.json({ message: "ลบรายการสำเร็จ", result });

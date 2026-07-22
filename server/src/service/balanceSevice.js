@@ -6,11 +6,3 @@ export const checkBalanceService = async (userId) => {
         where: { userId: userId }
     })
 }
-
-export const addBalanceService = async (userId, amount) => {
-    return await prisma.userBalance.upsert({
-        where: { userId: userId },
-        update: { amount: { increment: parseFloat(amount) } },
-        create: { userId: userId, amount: parseFloat(amount) }
-    });
-}

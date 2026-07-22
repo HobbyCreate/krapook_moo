@@ -1,10 +1,8 @@
 import { getAllpocketsService, addPocketService, editPocketNameService, editPocketLimitService, deletePocketService } from '../service/pocketService.js'
 import { checkBalanceService } from '../service/balanceSevice.js'
-// สมมติว่าใช้ userId เป็น 'user_default' ไปก่อนสำหรับการทดสอบ
-// const USER_ID = 'user_default'; 
 
 export const getAllPocket = async (req, res) => {
-    const { userId } = req.body
+    const { userId } = req.userId;
     try {
         const allPocket = await getAllpocketsService(userId);
         res.status(200).json(allPocket);
@@ -14,7 +12,8 @@ export const getAllPocket = async (req, res) => {
 }
 
 export const addPocket = async (req, res) => {
-    const { userId, name, limit, icon } = req.body;
+    const { userId } = req.userId;
+    const { name, limit, icon } = req.body;
     try {
         const pocket = await addPocketService(userId, name, limit, icon);
         res.status(201).json({ 
@@ -40,7 +39,11 @@ export const changePocketName = async (req, res) => {
 export const changePocketLimit = async (req, res) => {
     const { id } = req.params;
     const { newLimit } = req.body;
-    const { userId, limit: oldLimit } = req.pocket;
+    const { userId, limit: oldLimit } = req.pocket || {};
+
+    if (!userId || oldLimit === undefined) {
+        return res.status(400).json({ error: "ไม่พบข้อมูลกระเป๋า หรือยังไม่ได้ตรวจสอบสิทธิ์กระเป๋า" });
+    }
     
     const userBalance = await checkBalanceService(userId);
     if (!userBalance) {

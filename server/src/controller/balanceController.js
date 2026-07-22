@@ -1,10 +1,7 @@
 import { checkBalanceService, addBalanceService } from '../service/balanceSevice.js'
 
-// สมมติว่าใช้ userId เป็น 'user_default' ไปก่อนสำหรับการทดสอบ
-// const userId = 'user_default'; 
-
 export const getBalance = async (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req.userId;
     try {
         const balanceData = await checkBalanceService(userId);
         res.json(balanceData || { userId: userId, amount: 0 });
@@ -14,7 +11,8 @@ export const getBalance = async (req, res) => {
 };
 
 export const addBalance = async (req, res) => {
-    const { userId, amount } = req.body;
+    const { userId } = req.userId;
+    const { amount } = req.body;
     try {
         const updatedBalance = await addBalanceService(userId, amount);
         res.json({ message: "เพิ่มเงินสำเร็จ", newBalance: updatedBalance.amount });
