@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+    --color-bg-main: #f1f2ef;
+    --color-bg-submain: #B1D3B9;
+    --color-bg-header: #B1D3B9;
+
+    --color-slate-900: #0F172A;
+    --color-sage-dark: #659287;   
+    --color-sage-main: #88BDA4;   
+    --color-sage-light: #B1D3B9;  
+    --color-sage-pale: #E6F2DD;
+    --color-bg-card: #ffffff;
+    --color-htext-card: #059669;
+}
+
+
+body {
+    background-color: var(--color-slate-50, #F8FAFC);
+    color: var(--color-slate-900, #0F172A);
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    color: var(--color-sage-dark);
+}
+
+
+.pocket-card, .balance-card, .transition-table {
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--color-htext-card);
+    }
+    p, span {
+        color: #475569;
+    }
+    button {
+        color: var(--color-sage-dark);
+    }
+}
+
+
+.slidebar {
+    h1, h2, h3, h4, h5, h6 {
+        color: var(--color-slate-900, #0F172A);
+    }
+    p, span {
+        color: #475569;
+    }
+    button {
+        color: var(--color-slate-900, #0F172A);
+    }
+}

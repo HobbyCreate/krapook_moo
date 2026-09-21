@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  firstname String
+  lastname  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  // ความสัมพันธ์
+  pockets      Pocket[]
+  transactions Transaction[]
+  balance      UserBalance?
+}
+
+model UserBalance {
+  id     String  @id @default(uuid())
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id])
+  amount Decimal @default(0) @db.Decimal(12, 2)
+}
+
+model Pocket {
+  id      String  @id @default(uuid())
+  userId  String
+  user    User    @relation(fields: [userId], references: [id])
+  name    String
+  limit   Decimal @default(0) @db.Decimal(12, 2)
+  initialLimit Decimal @default(0) @db.Decimal(12, 2)
+  icon    String? // เก็บชื่อ Icon หรือ Emoji
+  isActive  Boolean @default(true)
+  transactions Transaction[]
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  pocketId  String?
+  pocket    Pocket?  @relation(fields: [pocketId], references: [id])
+  pocketName String?
+  
+  amount    Decimal  @db.Decimal(12, 2)
+  deductPocket Decimal @default(0) @db.Decimal(12, 2)
+  deductMain   Decimal @default(0) @db.Decimal(12, 2)
+  type      String   // "INCOME", "EXPENSE"
+  note      String?
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,22 @@
+import { checkBalanceService } from '../service/balanceSevice.js'
+
+export const getBalance = async (req, res) => {
+    const { userId } = req.userId;
+    try {
+        const balanceData = await checkBalanceService(userId);
+        res.json(balanceData || { userId: userId, amount: 0 });
+    } catch (error) {
+        res.status(500).json({ error: "ดึงข้อมูลเงินไม่สำเร็จ" });
+    }
+};
+
+export const addBalance = async (req, res) => {
+    const { userId } = req.userId;
+    const { amount } = req.body;
+    try {
+        const updatedBalance = await addBalanceService(userId, amount);
+        res.json({ message: "เพิ่มเงินสำเร็จ", newBalance: updatedBalance.amount });
+    } catch (error) {
+        res.status(500).json({ error: "อัปเดตยอดเงินไม่สำเร็จ" });
+    }
+};
