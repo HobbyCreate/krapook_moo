@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import api from '@/lib/axios';
 import axios from 'axios';
+import { useAuthStore } from '@/store/authStore';
 
 export default function Login() {
   const router = useRouter();
@@ -12,18 +13,14 @@ export default function Login() {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [checkingAuth, setCheckingAuth] = useState<boolean>(true);
+
+  const setLoginData = useAuthStore((state) => state.setLoginData);
 
   useEffect(() => {
-    api.get('/auth/getme')
-      .then((res) => {
-        if (res.data.user) {
-          router.push('/dashboard');
-        }
-      })
-      .catch(() => {
-        setCheckingAuth(false);
-      });
+    const token = useAuthStore.getState().token;
+    if (token) {
+      router.replace('/dashboard');
+    }
   }, [router]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -38,6 +35,11 @@ export default function Login() {
       });
 
       if (response.status === 200 || response.status === 201) {
+        const { user, accessToken } = response.data;
+
+        // บันทึกลง Zustand และ localStorage อัตโนมัติ
+        setLoginData(user, accessToken);
+
         router.push('/dashboard');
         router.refresh(); 
       }
@@ -55,14 +57,6 @@ export default function Login() {
       setLoading(false);
     }
   };
-
-  if (checkingAuth) {
-    return (
-      <div className="h-screen w-full bg-emerald-900 flex items-center justify-center text-white">
-        กำลังตรวจสอบข้อมูล...
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-emerald-900 via-teal-900 to-gray-900 flex items-center justify-center p-4">
