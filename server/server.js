@@ -8,6 +8,7 @@ import transactionRouter from './src/routes/transactionRoutes.js'
 import authenticationRouter from './src/routes/authenRoutes.js';
 
 const app = express();
+app.set('trust proxy', true);
 const PORT = process.env.PORT || 4000;
 
 const allowedOrigins = [

@@ -21,7 +21,8 @@ export const login = async (req, res, next) => {
             httpOnly: true,  
             maxAge: 24 * 60 * 60 * 1000,  
             sameSite: "none",
-            secure: true
+            secure: true,
+            path: "/"
         });
 
         res.status(200).json({ 
@@ -40,8 +41,9 @@ export const logout = async (req, res, next) => {
 
         res.clearCookie("accessToken", {
             httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production"
+            sameSite: "none",
+            secure: true,
+            path: "/"
         });
 
         return res.status(200).json({ 

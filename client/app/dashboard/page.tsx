@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; 
+import api from '@/lib/axios'; // 
 import { ChartNoAxesCombined, ArrowUp } from 'lucide-react';
 import { Header } from "@/component/header";
 import { Sidebar } from "@/component/sidebar";
@@ -16,11 +18,35 @@ import MobileNavBar from '@/component/mobilenavbar'
 import { processDate } from '@/util/util';
 
 export default function Dashboard() {
+    const router = useRouter(); 
     const { formattedDateTH, formattedDateEN } = processDate();
     const [openAnalysis, SetOpenAnalysis] = useState<boolean>(false);
+    const [checkingAuth, setCheckingAuth] = useState<boolean>(true);
+
+    useEffect(() => {
+        api.get('/auth/getme')
+            .then((res) => {
+                if (!res.data.user) {
+                    router.push('/'); 
+                } else {
+                    setCheckingAuth(false); 
+                }
+            })
+            .catch(() => {
+                router.push('/'); 
+            });
+    }, [router]);
 
     const openAnalysisToggle = () => {
         SetOpenAnalysis((prev) => !prev);
+    }
+
+    if (checkingAuth) {
+        return (
+            <div className="h-screen w-full bg-zinc-900 flex items-center justify-center text-white">
+                กำลังตรวจสอบสิทธิ์การเข้าใช้งาน...
+            </div>
+        );
     }
 
     return (
