@@ -93,7 +93,7 @@ export const Herosection = () => {
             <div className="relative z-10 text-center text-white">
                 <div ref={containerRef}
                     className="h-full flex flex-col items-center justify-center gap-6 px-6 pb-10" >
-                    <h1 className="text-8xl font-bold text-center leading-30 text-white! mb-10">
+                    <h1 className="text-3xl md:text-5xl xl:text-6xl h-30 md:h-50 2xl:h-60 2xl:text-8xl font-bold text-center leading-10 md:leading-20 xl:leading-20 2xl:leading-30 text-white! mb-10">
                         {renderWords(line1, "l1", "headline-word")}
                         <br />
                         {renderWords(line2, "l2", "headline-word")}
@@ -102,11 +102,11 @@ export const Herosection = () => {
                     <p className="max-w-2xl text-xl text-center text-white! h-30">
                         {renderWords(sub, "sub", "subline-word")}
                     </p>
-                    <div className="w-full flex justify-center gap-12 mt-20">
-                        <Link href="/login" className="font-semibold px-4 py-3 bg-black text-white max-w-62.5 w-full rounded-full hover:bg-emerald-600 hover:text-white transition-all duration-300">
+                    <div className="w-full flex flex-col md:flex-row justify-center gap-4 md:gap-12 mt-20">
+                        <Link href="/login" className="font-semibold px-4 py-3 bg-black text-white md:max-w-62.5 w-full rounded-full hover:bg-emerald-600 hover:text-white transition-all duration-300">
                             Create Your Account
                         </Link>
-                        <Link href="/register" className="font-semibold px-4 py-3 bg-white text-emerald-600 max-w-62.5 w-full rounded-full hover:bg-emerald-600 hover:text-white transition-all duration-300">
+                        <Link href="/register" className="font-semibold px-4 py-3 bg-white text-emerald-600 md:max-w-62.5 w-full rounded-full hover:bg-emerald-600 hover:text-white transition-all duration-300">
                             Log In
                         </Link>
                     </div>
