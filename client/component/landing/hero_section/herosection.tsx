@@ -102,7 +102,7 @@ export const Herosection = () => {
                     <p className="max-w-2xl text-xl text-center text-white! h-30">
                         {renderWords(sub, "sub", "subline-word")}
                     </p>
-                    <div className="w-full flex flex-col md:flex-row justify-center gap-4 md:gap-12 mt-20">
+                    <div className="w-full flex flex-col md:flex-row justify-center gap-8 md:gap-12 mt-20">
                         <Link href="/login" className="font-semibold px-4 py-3 bg-black text-white md:max-w-62.5 w-full rounded-full hover:bg-emerald-600 hover:text-white transition-all duration-300">
                             Create Your Account
                         </Link>

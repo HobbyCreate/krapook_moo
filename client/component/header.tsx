@@ -59,10 +59,10 @@ export const Header = () => {
                 </div>
                 ) : (
                 <div className="flex items-center gap-3">
-                    <Link href="/login" className="text-gray-700 hover:text-black font-medium text-sm px-3 py-2">
+                    <Link href="/login" className="min-w-32 text-center bg-transparent border-[1px] text-black hover:bg-emerald-600 hover:text-white hover:border-emerald-600 px-6 py-2 rounded-full font-semibold text-sm transition-all">
                     เข้าสู่ระบบ
                     </Link>
-                    <Link href="/register" className="bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-800 transition">
+                    <Link href="/register" className="min-w-32 text-center bg-black border-[1px] border-black text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-emerald-600 hover:border-emerald-600 transition-all">
                     สมัครสมาชิก
                     </Link>
                 </div>
