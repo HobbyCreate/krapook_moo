@@ -89,7 +89,7 @@ export const Herosection = () => {
         ));
 
     return (
-        <div className="min-h-screen w-full bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-800 animate-dynamic-bg flex items-center justify-center p-4">
+        <div className="min-h-[calc(100vh-5rem)] w-full bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-800 animate-dynamic-bg flex items-center justify-center p-4">
             <div className="relative z-10 text-center text-white">
                 <div ref={containerRef}
                     className="h-full flex flex-col items-center justify-center gap-6 px-6 pb-10" >

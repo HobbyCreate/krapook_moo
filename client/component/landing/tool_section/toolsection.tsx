@@ -20,14 +20,14 @@ import tanstackLogo from "@/public/icons/tanstack-dark.png";
 import prismaLogo from "@/public/icons/prisma.png";
 
 const wrapImage = [
-    { imgSrc: awsLogo, imgDesc: "AWS", imgLink: "https://aws.amazon.com/" },
-    { imgSrc: dockerLogo, imgDesc: "Docker", imgLink: "https://www.docker.com/" },
-    { imgSrc: expressLogo, imgDesc: "Express.js", imgLink: "https://expressjs.com/" },
-    { imgSrc: gitLogo, imgDesc: "GitHub", imgLink: "https://github.com/" },
     { imgSrc: nextLogo, imgDesc: "Next.js", imgLink: "https://nextjs.org/" },
     { imgSrc: nodeLogo, imgDesc: "Node.js", imgLink: "https://nodejs.org/" },
+    { imgSrc: expressLogo, imgDesc: "Express.js", imgLink: "https://expressjs.com/" },
     { imgSrc: jsLogo, imgDesc: "JavaScript", imgLink: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
     { imgSrc: tsLogo, imgDesc: "TypeScript", imgLink: "https://www.typescriptlang.org/" },
+    { imgSrc: gitLogo, imgDesc: "GitHub", imgLink: "https://github.com/" },
+    { imgSrc: awsLogo, imgDesc: "AWS", imgLink: "https://aws.amazon.com/" },
+    { imgSrc: dockerLogo, imgDesc: "Docker", imgLink: "https://www.docker.com/" },
     { imgSrc: postgresLogo, imgDesc: "PostgreSQL", imgLink: "https://www.postgresql.org/" },
     { imgSrc: supabaseLogo, imgDesc: "Supabase", imgLink: "https://supabase.com/" },
     { imgSrc: tailwindLogo, imgDesc: "Tailwind CSS", imgLink: "https://tailwindcss.com/" },
@@ -103,7 +103,7 @@ export const Toolsection = () => {
                                     width={50}
                                     height={50}
                                     alt={item.imgDesc}
-                                    className="object-contain"
+                                    className="object-contain w-auto h-auto"
                                 />
                                 <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-white text-black text-xs font-semibold rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg z-50">
                                     {item.imgDesc}

@@ -18,7 +18,7 @@ export const Header = () => {
     }, [user, fetchUser]);
 
     return (
-        <header className="w-full h-18 bg-[var(--color-sage-main)] flex justify-between items-center px-6 md:px-10 shadow-sm">
+        <header className="w-full h-20 bg-[var(--color-sage-main)] flex justify-between items-center px-6 md:px-10 shadow-sm">
             <div>
                 <Link href="/" className="flex flex-row items-center justify-center ">
                     <Image
@@ -28,7 +28,7 @@ export const Header = () => {
                         alt="krapook_moo_icon"
                         className='mr-3' 
                         />
-                    <p className='text-black! text-2xl tracking-wide font-bold hidden md:block'>Krapook Moo</p>
+                    {/* <p className='text-black! text-2xl tracking-wide font-bold hidden md:block'>Krapook Moo</p> */}
                 </Link>
             </div>
 

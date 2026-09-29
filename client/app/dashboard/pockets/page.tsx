@@ -33,7 +33,7 @@ function DashboardContent() {
                 <MobileNavBar />
             </div>
             <div className="flex w-full">
-                <div className="bg-[var(--color-bg-main)] w-full min-h-screen">
+                <div className="bg-[var(--color-bg-main)] w-full min-h-[calc(100vh-5rem)]">
                     <div className="w-full p-6 md:p-10">
                         <div className="balance-card mb-10">
                             <h2 className="text-3xl font-bold uppercase mb-8">
