@@ -16,7 +16,7 @@ export interface Transactions {
 
 interface AddNewTransactionPayload {
     userId: string,
-    pocketId: string,
+    pocketId: string | undefined,
     amount: number,
     type: string,
     note?: string,
@@ -61,6 +61,24 @@ export const useEditNewTransaction = () => {
             newAmount?: number;
         }) => {
             const res = await api.put(`/transactions/${transactionId}`, { userId, newNote, newPocketId, newAmount, });
+            return res.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['transactions'] });
+            queryClient.invalidateQueries({ queryKey: ['pockets'] });
+            queryClient.invalidateQueries({ queryKey: ['balance'] });
+        },
+    });
+}
+
+export const useRemoveTransaction = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({ transactionId }: {
+            transactionId: string;
+        }) => {
+            const res = await api.delete(`/transactions/${transactionId}`, );
             return res.data;
         },
         onSuccess: () => {

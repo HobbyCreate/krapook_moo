@@ -72,7 +72,3 @@ export const loginService = async (email, password) => {
         }
     };
 }
-
-export const logoutService = () => {
-    
-}

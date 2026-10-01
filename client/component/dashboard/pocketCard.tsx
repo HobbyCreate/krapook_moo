@@ -2,8 +2,9 @@ import { usePocketHook, Pockets } from '@/customHooks/pocketHooks';
 import { useState } from 'react';
 import { getPocketProgressColor } from '@/util/util';
 import 'swiper/css';
-import EditPocketModal from '../modal/editPocketModal';
-import DeletePocketModal from '../modal/deleteModal';
+import EditPocketModal from '@/component/modal/editPocketModal';
+import DeletePocketModal from '@/component/modal/deleteModal';
+import ResetPocketModal from '@/component/modal/resetPocketModal'
 
 import { PencilLine, Trash2, RotateCcw } from 'lucide-react';
 
@@ -13,9 +14,9 @@ interface PocketCardProps {
 
 export default function PocketCard({ onOpenAddPocket }: PocketCardProps) {
     const { data: pocketData, isLoading, isError } = usePocketHook();
-    
     const [selectedPocket, setSelectedPocket] = useState<Pockets | null>(null);
     const [editpocketmodal, setEditpocketmodal] = useState(false);
+    const [resetpocketmodal, setResetpocketmodal] = useState(false);
     const [deletepocketmodal, setDeletepocketmodal] = useState(false);
 
     const handleOpenEdit = (pocket: Pockets) => {
@@ -26,6 +27,11 @@ export default function PocketCard({ onOpenAddPocket }: PocketCardProps) {
     const handleOpenDelete = (pocket: Pockets) => {
         setSelectedPocket(pocket);
         setDeletepocketmodal(true);
+    }
+
+    const handleOpenReset = (pocket: Pockets) => {
+        setSelectedPocket(pocket);
+        setResetpocketmodal(true);
     }
 
     if (isLoading) {
@@ -63,8 +69,8 @@ export default function PocketCard({ onOpenAddPocket }: PocketCardProps) {
                 return (
                     <div key={pocket.id || index} className='relative py-3 px-1 flex flex-col w-full md:w-80 pocket-card'>
                         <div className='flex gap-2'>
-                            {
-                                pocket.isActive === true ?
+                            {/* {
+                                pocket.isActive === true ? */}
                                     <div className='absolute py-3 px-1 top-4 right-4 flex gap-2 z-50'>
                                         <button 
                                             type="button"
@@ -75,13 +81,20 @@ export default function PocketCard({ onOpenAddPocket }: PocketCardProps) {
                                         </button>
                                         <button 
                                             type="button"
+                                            onClick={() => handleOpenReset(pocket)}
+                                            className='w-9 h-9 flex items-center justify-center rounded-full border border-emerald-500 text-emerald-500! hover:bg-emerald-50 active:scale-95 transition-all duration-200 cursor-pointer font-semibold shadow-xs hover:rotate-12'
+                                        >
+                                            <RotateCcw size={16} className="" />
+                                        </button>
+                                        <button 
+                                            type="button"
                                             onClick={() => handleOpenDelete(pocket)}
                                             className='w-9 h-9 flex items-center justify-center rounded-full border border-emerald-500 text-emerald-500! hover:bg-emerald-50 active:scale-95 transition-all duration-200 cursor-pointer font-semibold shadow-xs hover:rotate-12'
                                         >
                                             <Trash2 size={16} className="" />
                                         </button>
                                     </div>
-                                    :
+                                    {/* :
                                     <div className='absolute py-3 px-1 top-4 right-4 flex gap-2 z-50'>
                                         <button 
                                             type="button"
@@ -91,7 +104,7 @@ export default function PocketCard({ onOpenAddPocket }: PocketCardProps) {
                                             <RotateCcw size={16} className="opacity-100!" />
                                         </button>
                                     </div>
-                                    }
+                                    } */}
                             </div>
                         <div className={`relative p-6 rounded-2xl shadow-sm border ${pocketStatus} z-10 bg-[var(--color-bg-card)] border-gray-200/40 w-full h-full flex flex-col justify-between`}>
                             <div>
@@ -156,6 +169,17 @@ export default function PocketCard({ onOpenAddPocket }: PocketCardProps) {
                     isOpen={editpocketmodal} 
                     onClose={() => {
                         setEditpocketmodal(false);
+                        setSelectedPocket(null);
+                    }}
+                    pocket={selectedPocket}
+                />
+            }
+
+            {
+                <ResetPocketModal
+                    isOpen={resetpocketmodal} 
+                    onClose={() => {
+                        setResetpocketmodal(false);
                         setSelectedPocket(null);
                     }}
                     pocket={selectedPocket}

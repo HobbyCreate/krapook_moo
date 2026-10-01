@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useTransactionsHook, Transactions } from "@/customHooks/transactionHooks";
 import { usePathname } from 'next/navigation'
 import { Trash, SquarePen } from 'lucide-react';
-import EditTransactionModal from "../modal/editTransactionModal";
+import EditTransactionModal from "@/component/modal/editTransactionModal";
+import RemoveTransactionModal from '@/component/modal/removeTransactionModal';
 
 export default function TransactionTable() {
     const { data: transactionData, isLoading, isError } = useTransactionsHook();
@@ -18,6 +19,7 @@ export default function TransactionTable() {
     }
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState<Transactions | null>(null);
 
     if (isLoading) {
@@ -89,10 +91,15 @@ export default function TransactionTable() {
                                         <button onClick={() => {
                                                     setSelectedTransaction(transaction);
                                                     setIsEditModalOpen(true);
-                                                }} type="button" className="cursor-pointer p-2 bg-gray-200 hover:bg-gray-300 transition-all rounded-full">
+                                                }} 
+                                                type="button" className="cursor-pointer p-2 bg-gray-200 hover:bg-gray-300 transition-all rounded-full">
                                             <SquarePen className="size-3.5" />
                                         </button>
-                                        <button type="button" className="cursor-pointer p-2 bg-red-200 hover:bg-red-400 transition-all rounded-full">
+                                        <button  onClick={() => {
+                                                    setSelectedTransaction(transaction);
+                                                    setIsRemoveModalOpen(true);
+                                                }}
+                                                type="button" className="cursor-pointer p-2 bg-red-200 hover:bg-red-400 transition-all rounded-full">
                                             <Trash className="size-3.5" />
                                         </button>
                                     </div>
@@ -132,10 +139,20 @@ export default function TransactionTable() {
             </div>
 
             <EditTransactionModal 
-                key={selectedTransaction?.id || "modal-closed"}
+                key={selectedTransaction?.id }
                 isOpen={isEditModalOpen}
                 onClose={() => {
                     setIsEditModalOpen(false);
+                    setSelectedTransaction(null);
+                }}
+                transactionData={selectedTransaction}
+            />
+
+            <RemoveTransactionModal 
+                key={selectedTransaction?.id }
+                isOpen={isRemoveModalOpen}
+                onClose={() => {
+                    setIsRemoveModalOpen(false);
                     setSelectedTransaction(null);
                 }}
                 transactionData={selectedTransaction}

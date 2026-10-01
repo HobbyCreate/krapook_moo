@@ -40,22 +40,22 @@ function DashboardContent() {
                                 <h2 className='text-3xl font-bold uppercase mb-8'>Transactions</h2>
                             </div>
                             <div className='w-full flex justify-end mb-6 gap-2'>
-                                <button
+                                {/* <button
                                     type='button'
                                     className="px-4 py-2 rounded-full cursor-pointer border border-gray-200 text-base font-medium text-white! bg-emerald-600! hover:bg-emerald-600/60! disabled:opacity-20 disabled:cursor-not-allowed transition">
                                     <FunnelPlus />
-                                </button>
+                                </button> */}
                                 <button
                                     onClick={openAddTransactionModal} 
                                     type='button'
                                     className="px-4 py-2 rounded-full cursor-pointer border border-gray-200 text-base font-medium text-white! bg-emerald-600! hover:bg-emerald-600/60! disabled:opacity-20 disabled:cursor-not-allowed transition">
                                     เพิ่มธุรกรรมใหม่
                                 </button>
-                                <button
+                                {/* <button
                                     type='button'
                                     className="px-4 py-2 rounded-full cursor-pointer border border-gray-200 text-base font-medium text-white! bg-emerald-600! hover:bg-emerald-600/60! disabled:opacity-20 disabled:cursor-not-allowed transition">
                                     export CSV
-                                </button>
+                                </button> */}
                             </div>
 
                             <AddTransactionModal 

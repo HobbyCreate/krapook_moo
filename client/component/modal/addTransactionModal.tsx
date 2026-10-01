@@ -18,7 +18,7 @@ export default function AddTransactionModal({ isOpen, onClose }: AddTransactionP
     const [transactionAmount, setTransactionAmount] = useState<number | string>("");
     const [transactionType, setTransactionType] = useState('INCOME');
     const [transactionNote, setTransactionNote] = useState('');
-    const [selectedPocket, setSelectedPocket] = useState('');
+    const [selectedPocket, setSelectedPocket] = useState<string>();
 
     const handleAddTransactionClick = () => {
         if (loading) {
@@ -38,6 +38,8 @@ export default function AddTransactionModal({ isOpen, onClose }: AddTransactionP
             type: transactionType,
             note: transactionNote,
         };
+
+        console.log(addTransactionPayload)
 
         AddNewTransaction(addTransactionPayload, {
             onSuccess: () => {

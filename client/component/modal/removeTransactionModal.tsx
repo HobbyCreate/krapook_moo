@@ -1,55 +1,58 @@
 import React from 'react'
 import { X } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore';
-import { useDeletePocket } from '@/customHooks/pocketHooks';
+import { Transactions, useRemoveTransaction } from '@/customHooks/transactionHooks';
 
-
-interface PocketData {
+interface TransactionData {
     id: string;
-    name: string;
-    limit: number;
-    initialLimit: number;
-    icon: string;
-    isActive: boolean;
+    userId: string;
+    pocketId: string | null;
+    pocketName: string;
+    amount: number;
+    deductPocket: number;
+    deductMain: number;
+    type: string;
+    note: string;
+    createdAt: string;
 }
 
-interface DeletePocketModalProps {
+interface RemoveTransactionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    pocket: PocketData | null;
+    transactionData: TransactionData | null;
 }
 
-export default function DeletePocketModal({isOpen, onClose, pocket}: DeletePocketModalProps) {
+export default function RemoveTransactionModal({isOpen, onClose, transactionData}: RemoveTransactionModalProps) {
     const user = useAuthStore((state) => state.user);
     const loading = useAuthStore((state) => state.loading);
-    const { mutate: deletePocket, isPending } = useDeletePocket();
+    const { mutate: removeTransaction, isPending } = useRemoveTransaction();
 
-    const handleDeletePocketClick = () => {
+    const handleResetPocketClick = () => {
         if (loading) {
             alert("กำลังโหลดข้อมูล กรุณาสักครู่...");
             return;
         }
 
-        if (!user || !pocket) {
+        if (!user || !transactionData) {
             alert("ไม่พบข้อมูลผู้ใช้หรือกระเป๋าที่ต้องการลบ");
             return;
         }
 
         const payloads = {
-            id: pocket.id,
             userId: user.id,
+            transactionId: transactionData.id,
         };
 
-        console.log(payloads)
+        console.log('transactionId', payloads.transactionId)
 
-        deletePocket(payloads, {
+        removeTransaction(payloads, {
             onSuccess: () => {
-                alert("ลบกระเป๋าสำเร็จ!");
+                alert("รีเซ็ตกระเป๋าสำเร็จ!");
                 onClose();
             },
             onError: (error) => {
                 console.error(error);
-                alert("เกิดข้อผิดพลาดในการลบกระเป๋า");
+                alert("เกิดข้อผิดพลาดในการรีเซ็ตกระเป๋า");
             }
         });
 
@@ -74,10 +77,8 @@ export default function DeletePocketModal({isOpen, onClose, pocket}: DeletePocke
                                 <X size={20} />
                             </button>
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-2xl">
-                            </div>
                             <div>
-                                <h2 className='text-xl font-bold text-gray-900'>ท่านต้องการลบกระเป๋าใบนี้หรือไม่</h2>
+                                <h2 className='text-xl font-bold text-gray-900'>ท่านต้องการลบธุรกรรมนี้หรือไม่</h2>
                             </div>
                         </div>
 
@@ -92,7 +93,7 @@ export default function DeletePocketModal({isOpen, onClose, pocket}: DeletePocke
                         <button 
                             type='button'
                             disabled={isPending}
-                            onClick={handleDeletePocketClick}
+                            onClick={handleResetPocketClick}
                             className='flex-1 px-4 py-3 rounded-xl cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white! text-sm font-semibold shadow-lg shadow-emerald-600/20 transition-all disabled:opacity-50'
                         >
                             {

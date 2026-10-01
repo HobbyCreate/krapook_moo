@@ -98,6 +98,29 @@ export const editPocketLimitService = async (id, newLimit, userId, oldLimit) => 
     ]);
 };
 
+export const resetPocketService = async (pocketId, userId) => {
+    return await prisma.$transaction(async (tx) => {
+        const pocket = await tx.pocket.findUnique({ where: { id: pocketId } });
+        if (!pocket) throw new Error("ไม่พบกระเป๋านี้");
+
+        const currentBalance = await tx.userBalance.findUnique({ where: { userId } });
+        if (!currentBalance) throw new Error("ไม่พบข้อมูลยอดเงินผู้ใช้");
+
+        await tx.userBalance.update({
+            where: { userId },
+            data: { 
+                amount: { increment: pocket.limit } 
+            }
+        });
+
+        await tx.pocket.update({
+            where: { id: pocketId },
+            data: { limit: pocket.initialLimit } 
+        });
+
+    });
+}
+
 
 // delete pocket sevice
 export const deletePocketService = async (pocketId, userId) => {

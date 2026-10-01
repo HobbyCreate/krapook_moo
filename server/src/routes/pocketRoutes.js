@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllPocket, addPocket, changePocketName, deletePocket, changePocketLimit } from '../controller/pocketController.js';
+import { getAllPocket, addPocket, changePocketName, deletePocket, changePocketLimit, resetPocket } from '../controller/pocketController.js';
 import { validateAddPocket, validateAvailablePocket } from '../middleware/validatePocket.js';
 import { checkAuthen } from '../middleware/checkAuthen.js';
 
@@ -9,6 +9,7 @@ pocketRouter.get('/', checkAuthen, getAllPocket);
 pocketRouter.post('/add', checkAuthen, validateAddPocket, addPocket);
 pocketRouter.put('/:id/name', checkAuthen, validateAvailablePocket, changePocketName);
 pocketRouter.put('/:id/limit', checkAuthen, validateAvailablePocket, changePocketLimit);
+pocketRouter.put('/:id', checkAuthen, validateAvailablePocket, resetPocket );
 pocketRouter.delete('/:id', checkAuthen, validateAvailablePocket, deletePocket);
 
 

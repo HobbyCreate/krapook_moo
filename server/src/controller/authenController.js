@@ -1,5 +1,5 @@
 import { email } from "zod";
-import { registerService, loginService, logoutService, getMeService } from "../service/authenSevice.js";
+import { registerService, loginService, getMeService } from "../service/authenSevice.js";
 import { insertNewTransactionService } from "../service/transactionService.js";
 
 export const register = async (req, res, next) => {

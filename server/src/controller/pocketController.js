@@ -1,4 +1,4 @@
-import { getAllpocketsService, addPocketService, editPocketNameService, editPocketLimitService, deletePocketService } from '../service/pocketService.js'
+import { getAllpocketsService, addPocketService, editPocketNameService, editPocketLimitService, deletePocketService, resetPocketService } from '../service/pocketService.js'
 import { checkBalanceService } from '../service/balanceSevice.js'
 
 export const getAllPocket = async (req, res) => {
@@ -24,6 +24,18 @@ export const addPocket = async (req, res) => {
         res.status(400).json({ error: error.message || "เพิ่มกระเป๋าไม่สำเร็จ" });
     }
 };
+
+export const resetPocket = async (req, res) => {
+    const { id } = req.params; 
+    const { userId } = req.userId; 
+
+    try {
+        const pocket = await resetPocketService(id, userId);
+        res.status(200).json({ message: "รีเซ็ตกระเป๋าสำเร็จ", pocket });
+    } catch(error) {
+        res.status(500).json({ error: error.message || "รีเซ็ตกระเป๋าไม่สำเร็จ" });
+    }
+}
 
 export const changePocketName = async (req, res) => {
     const { id } = req.params;

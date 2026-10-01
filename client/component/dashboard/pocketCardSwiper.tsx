@@ -1,12 +1,21 @@
-import { usePocketHook } from '@/customHooks/pocketHooks';
+import { useState } from 'react';
+import { usePocketHook, Pockets } from '@/customHooks/pocketHooks';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getPocketProgressColor } from '@/util/util'
 import 'swiper/css';
+import ResetPocketModal from '@/component/modal/resetPocketModal'
+
+import { RotateCcw } from 'lucide-react';
 
 export default function PocketCardSwiper() {
     const { data: pocketData, isLoading, isError } = usePocketHook();
+    const [selectedPocket, setSelectedPocket] = useState<Pockets | null>(null);
+    const [resetpocketmodal, setResetpocketmodal] = useState(false);
 
-    console.log("pocketData", pocketData)
+    const handleOpenReset = (pocket: Pockets) => {
+            setSelectedPocket(pocket);
+            setResetpocketmodal(true);
+        }
 
     if (isLoading) {
         return (
@@ -62,13 +71,22 @@ export default function PocketCardSwiper() {
                             >
                                 <div className='p-6 rounded-2xl shadow-sm border bg-[var(--color-bg-card)] border-gray-200/40 w-full h-full flex flex-col justify-between '>
                                     <div>
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div>
-                                                <h2 className="text-lg font-bold text-slate-900 uppercase tracking-tight">
-                                                    {pocket?.name}
-                                                </h2>
-                                                <span className="text-base text-slate-400 font-medium">งบประมาณรายเดือน</span>
+                                        <div className='flex items-start justify-between'>
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div>
+                                                    <h2 className="text-lg font-bold text-slate-900 uppercase tracking-tight">
+                                                        {pocket?.name}
+                                                    </h2>
+                                                    <span className="text-base text-slate-400 font-medium">งบประมาณรายเดือน</span>
+                                                </div>
                                             </div>
+                                            <button 
+                                                type="button"
+                                                onClick={() => handleOpenReset(pocket)}
+                                                className='w-9 h-9 flex items-center justify-center rounded-full border border-emerald-500 text-emerald-500! hover:bg-emerald-50 active:scale-95 transition-all duration-200 cursor-pointer font-semibold shadow-xs hover:rotate-12'
+                                            >
+                                                <RotateCcw size={16} className="" />
+                                            </button>
                                         </div>
 
                                         <div className="w-full bg-slate-100 rounded-full h-2 my-3 overflow-hidden">
@@ -105,6 +123,17 @@ export default function PocketCardSwiper() {
                         );
                     })}
             </Swiper>
+            {
+                <ResetPocketModal
+                    isOpen={resetpocketmodal} 
+                    onClose={() => {
+                        setResetpocketmodal(false);
+                        setSelectedPocket(null);
+                    }}
+                    pocket={selectedPocket}
+                />
+            }
             </div>
+            
     );
 }

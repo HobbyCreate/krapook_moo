@@ -37,6 +37,12 @@ interface DeletePocketPayload {
     userId?: string;
 }
 
+interface ResetPocketPayload {
+    id: string;
+    userId?: string;
+}
+
+
 export const useAddPocket = () => {
     const queryClient = useQueryClient();
 
@@ -80,6 +86,22 @@ export const useEditPocketLimit = () => {
         },
     });
 };
+
+export const useResetPocket = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({id, userId}: ResetPocketPayload) => {
+            const res = await api.put(`/pocket/${id}`, { data: { userId } })
+            return res.data;
+        },
+        onSuccess: ()=> {
+            queryClient.invalidateQueries({ queryKey: ['pockets'] });
+            queryClient.invalidateQueries({ queryKey: ['balance'] }); 
+            queryClient.invalidateQueries({ queryKey: ['transactions'] }); 
+        }
+    })
+}
 
 export const useDeletePocket = () => {
     const queryClient = useQueryClient();
