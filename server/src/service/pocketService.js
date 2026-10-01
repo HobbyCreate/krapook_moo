@@ -106,18 +106,27 @@ export const resetPocketService = async (pocketId, userId) => {
         const currentBalance = await tx.userBalance.findUnique({ where: { userId } });
         if (!currentBalance) throw new Error("ไม่พบข้อมูลยอดเงินผู้ใช้");
 
+        const requiredAmount = pocket.initialLimit - pocket.limit;
+
+        if (requiredAmount > 0 && currentBalance.amount < requiredAmount) {
+            throw new Error("ยอดเงินในกระเป๋าหลักไม่พอสำหรับรีเซ็ตกระเป๋านี้");
+        }
+
         await tx.userBalance.update({
             where: { userId },
             data: { 
-                amount: { increment: pocket.limit } 
+                amount: { 
+                    decrement: requiredAmount 
+                } 
             }
         });
 
-        await tx.pocket.update({
+        const updatedPocket = await tx.pocket.update({
             where: { id: pocketId },
             data: { limit: pocket.initialLimit } 
         });
 
+        return updatedPocket;
     });
 }
 
