@@ -16,28 +16,40 @@ export const getMeService = async (userId) => {
 }
 
 export const registerService = async (email, firstname, lastname, password) => {
-    // check email
+    // 1. เช็กอีเมลซ้ำ
     const existingUser = await prisma.user.findUnique({
         where: { email: email }
     })
     if (existingUser) throw new Error("อีเมลนี้ถูกใช้งาน, กรุณาใช้อีเมลอื่น");
 
-    // hash password
+    // 2. Hash password
     const newPassword = await bcrypt.hash(password, 10);
 
-    // add user to db
-    const newUser = await prisma.user.create({
-        data: {
-            email: email,
-            firstname: firstname,
-            lastname: lastname,
-            password: newPassword,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        }
-    })
-    // remove password before return
-    const { password: _, ...userWithoutPassword } = newUser;
+    // 3. ใช้ Transaction เพื่อสร้าง User และ UserBalance พร้อมกัน
+    const result = await prisma.$transaction(async (tx) => {
+        const newUser = await tx.user.create({
+            data: {
+                email: email,
+                firstname: firstname,
+                lastname: lastname,
+                password: newPassword,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+        });
+
+        await tx.userBalance.create({
+            data: {
+                userId: newUser.id, 
+                amount: 0           
+            }
+        });
+
+        return newUser;
+    });
+
+    // 4. ตัด password ออกก่อนส่งข้อมูลกลับ
+    const { password: _, ...userWithoutPassword } = result;
     return userWithoutPassword;
 }
 

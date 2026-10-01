@@ -7,6 +7,7 @@ import { checkBalanceService } from '../service/balanceSevice.js'
 // ดึง transactions ของกระเป๋านั้น และต้องเป็นเจ้าของกระเป๋า
 export const getAllTransactions = async (req, res) => {
     const { userId } = req.userId;
+    console.log(userId)
     try {
         const user = await checkBalanceService(userId)
         if(!user){
@@ -14,7 +15,7 @@ export const getAllTransactions = async (req, res) => {
         }
         const transactions = await getAllTransactionService(userId);
 
-        res.status(200).json({ data: transactions });
+        res.status(200).json(transactions);
     } catch (error) {
         return res.status(500).json({ error: "ระบบผิดพลาด กรุณาลองใหม่อีกครั้ง" })
     }

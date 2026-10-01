@@ -8,6 +8,8 @@ import RemoveTransactionModal from '@/component/modal/removeTransactionModal';
 export default function TransactionTable() {
     const { data: transactionData, isLoading, isError } = useTransactionsHook();
 
+    console.log(transactionData)
+
     const [currentPage, setCurrentPage] = useState(1);
     let itemsPerPage;
     const pathname = usePathname();

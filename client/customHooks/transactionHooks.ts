@@ -27,7 +27,7 @@ export const useTransactionsHook = () => {
         queryKey: ['transactions'],
         queryFn: async () => {
             const res = await api.get('/transactions');
-            return (res.data.data || res.data) as Transactions[];
+            return res.data as Transactions[];
         },
         refetchOnWindowFocus: false,
     })
