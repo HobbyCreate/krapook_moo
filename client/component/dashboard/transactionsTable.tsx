@@ -57,7 +57,7 @@ export default function TransactionTable() {
     const checkEdit = (date: number): boolean => {
         const nowDate = new Date().getTime();
         const diffInMs = nowDate - date; 
-        const threeDaysInMs = 3 * 24 * 60 * 60 * 1000; 
+        const threeDaysInMs = 1 * 24 * 60 * 60 * 1000; 
         return diffInMs <= threeDaysInMs;
     }
 
