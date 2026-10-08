@@ -60,7 +60,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex w-full">
                     <div className=' bg-[var(--color-bg-main)] w-full'>
-                        <div className="w-full py-6 md:py-10 px-6 md:px-10">
+                        <div className="w-full min-h-screen py-6 md:py-10 px-6 md:px-10">
                             <div className='balance-card mb-10'>
                                 <div className='flex flex-col-reverse md:flex-row justify-between'>
                                     <h2 className='text-lg md:text-xl lg:text-3xl font-bold uppercase mb-6 text-[var(--color-sage-dark)]'>Balance & Summary</h2>
@@ -92,8 +92,8 @@ export default function Dashboard() {
                                 </div>
                             </div>
                             <div className='balance-card mb-10'>
-                                <div className='flex items-center justify-between'>
-                                    <h2 className='text-lg md:text-xl lg:text-3xl font-bold uppercase mb-4 text-[var(--color-sage-dark)]'>Pockets</h2>
+                                <div className='flex items-center justify-between mb-2'>
+                                    <h2 className='text-lg md:text-xl lg:text-3xl font-bold uppercase mb-6 text-[var(--color-sage-dark)]'>Pockets</h2>
                                     <Link
                                         href="/dashboard/pockets?modal=add"
                                         className="primary-button flex items-center py-2 px-4 bg-emerald-600 text-white! rounded-full cursor-pointer"
